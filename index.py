@@ -24,9 +24,9 @@ def YTDownload():
     }
 
     with YoutubeDL(ydl_opts) as ydl:
-        info_dict = ydl.extract_info(ytURL, download=True)
-        video_title = info_dict.get('title', None)
-        ytFilePath.configure(text="Downloaded at: " + path_to_download_folder + backSlash + video_title + ".mp3")
+        infoDict = ydl.extract_info(ytURL, download=True)
+        videoTitle = infoDict.get('title', None)
+        ytFilePath.configure(text="Downloaded at: " + path_to_download_folder + backSlash + videoTitle + ".mp3")
 
 app = Tk()
 app.title("Youtube Downloader")
