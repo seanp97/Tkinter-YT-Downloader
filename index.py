@@ -10,6 +10,8 @@ import sys
 import tkinter
 from youtube_dl import YoutubeDL
 
+backSlash = "\ ".strip()
+
 path_to_download_folder = str(os.path.join(Path.home(), "Downloads"))
 
 def YTDownload():
@@ -23,6 +25,8 @@ def YTDownload():
 
     with YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(ytURL, download=True)
+        video_title = info_dict.get('title', None)
+        ytFilePath.configure(text="Downloaded at: " + path_to_download_folder + backSlash + video_title + ".mp3")
 
 app = Tk()
 app.title("Youtube Downloader")
@@ -36,5 +40,8 @@ ytEnt.grid(column=0, row=1)
 
 ytBtn = Button(app, command=YTDownload, text="Download")
 ytBtn.grid(column=0, row=2)
+
+ytFilePath = Label(app, text="", pady=10)
+ytFilePath.grid(column=0, row=3)
 
 app.mainloop()
