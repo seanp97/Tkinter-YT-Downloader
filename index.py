@@ -57,12 +57,45 @@ def YTDownload():
             messagebox.showwarning('Error', 'MP3 File could not be downloaded')
 
 
+def YTDownloadMp4():
+    ytURL = Entry.get(ytEntMp4)
+    global filePath
+    global isClicked
+
+    if filePath == "" or isClicked == False:
+        ydl_opts = {
+            'format': 'best',
+            'outtmpl': path_to_download_folder + '/' + '%(title)s '+'.mp4',
+            'noplaylist': True,
+            'extract-audio': True,
+        }
+    else:
+        ydl_opts = {
+            'format': 'best',
+            'outtmpl': filePath + '/' + '%(title)s '+'.mp4',
+            'noplaylist': True,
+            'extract-audio': True,
+        }
+
+    try:
+        with YoutubeDL(ydl_opts) as ydl:
+            infoDict = ydl.extract_info(ytURL, download=True)
+            videoTitle = infoDict.get('title', None)
+            if filePath == "" or isClicked == False:
+                messagebox.showinfo("Success", "Downloaded at: " + path_to_download_folder + backSlash + videoTitle + ".mp4")
+            else:
+                messagebox.showinfo("Success", "Downloaded at: " + filePath + backSlash + videoTitle + ".mp4")
+
+    except:
+            messagebox.showwarning('Error', 'MP4 File could not be downloaded')
+
+
 
 app = Tk()
 app.title("Youtube Downloader")
 app.geometry("900x450")
 
-ytOptionalFilePathLabel = Label(app, text="Enter optional folder path to add MP3's to", pady=10, padx=10,  font='Helvetica 8 bold')
+ytOptionalFilePathLabel = Label(app, text="Enter optional folder path to add MP3's/MP4's to", pady=10, padx=10,  font='Helvetica 8 bold')
 ytOptionalFilePathLabel.grid(column=0, row=0)
 ytOptionalFileEnt = Entry(app, bd=5)
 ytOptionalFileEnt.grid(column=0, row=1)
@@ -74,8 +107,12 @@ ytLabel.grid(column=0, row=3)
 
 ytEnt = Entry(app, bd=5)
 ytEnt.grid(column=0, row=4)
+ytEntMp4 = Entry(app, bd=5)
+ytEntMp4.grid(column=1, row=4)
 
-ytBtn = Button(app, command=YTDownload, bd=1, text="Download")
+ytBtn = Button(app, command=YTDownload, bd=1, text="Download MP3")
 ytBtn.grid(column=0, row=5)
+ytBtnMP4 = Button(app, command=YTDownloadMp4, bd=1, text="Download MP4")
+ytBtnMP4.grid(column=1, row=5)
 
 app.mainloop()
